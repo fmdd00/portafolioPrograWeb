@@ -12,14 +12,6 @@ const crearDivImagenCarrusel = (urlImagen, esPrimera) => {
 
 }
 
-// const callbackSuccess = (response) => {
-//     return response.json()
-// }
-
-// const callbackReadResponse = (data) => {
-    
-// }
-
 const callbackError = (error) => {
     console.error(error)
 }
@@ -100,16 +92,32 @@ const cargarDatos = () => {
         .catch(callbackError)
 }
 
-
-// const cargarProyectos = () => {
-    
-// }
+const estamosLogueados = () => {
+    const username = localStorage.getItem("USER_DATA")
+    if (username == null) return false;
+    else return true;
+}
 
 
 const main = () => {
-    // Cargar primero las imagenes y luego proyectos
-    cargarDatosAsyncAwait()
-    //cargarProyectos()
+    if (estamosLogueados()) {
+        location.href = '/main.html'
+    }else {
+        // Cargar primero las imagenes y luego proyectos
+        cargarDatosAsyncAwait()
+        //cargarProyectos()
+        const butLogin = document.getElementById("butLogin")
+        butLogin.addEventListener("click", () => {
+            const username = document.getElementById("txt_username").value
+            const userData = {
+                username : username,
+                fechaLogin : new Date().getTime()
+            }
+            localStorage.setItem("USER_DATA", JSON.stringify(userData))
+            
+            location.href = '/main.html'
+        })
+    }
 }
 
 window.addEventListener("load", main)
